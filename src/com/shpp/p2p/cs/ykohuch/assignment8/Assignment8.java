@@ -2,6 +2,7 @@ package com.shpp.p2p.cs.ykohuch.assignment8;
 import acm.graphics.GOval;
 import acm.util.RandomGenerator;
 import com.shpp.cs.a.graphics.WindowProgram;
+
 import java.util.ArrayList;
 
 
@@ -82,6 +83,10 @@ public class Assignment8 extends WindowProgram {
     private void physicsOfSnowflakesMotion() {
         for (int i = 0; i < NUMBER_OF_SNOWFLAKES; i++) {
             speeds[i] = (MIN_SPEED + Math.random() * MAX_SPEED);
+
+            /*in addition to the formation of a sinusoidal trajectory of fall,
+             this formula allows realizing the effect of gusts of wind that blows the snowflakes left or right.
+             For each snowflake the direction of movement is unique*/
             trajectory[i] = AMPLITUDE * Math.sin(Math.toDegrees(x));
 
                 /*x and y axes of motion for each snowflake are assigned
@@ -97,11 +102,14 @@ public class Assignment8 extends WindowProgram {
         for (GOval snowflake : snowballs) {
             physicsOfSnowflakesMotion();
             snowflake.move(x, y);
-
             /*if the snowflake falls below the height of the screen,
-             it is assigned a new location*/
+             it is assigned a new location and changes color and size*/
             if (snowflake.getY() > getHeight()) {
+                RandomGenerator rgen = RandomGenerator.getInstance();
                 snowflake.setLocation(Math.random() * getWidth(), y);
+                snowflake.setFillColor(rgen.nextColor());
+                snowflake.setSize( rgen.nextDouble(DIAMETER, DIAMETER / 2),
+                        rgen.nextDouble(DIAMETER, DIAMETER / 2));
             }
         }
     }
